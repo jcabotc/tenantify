@@ -14,14 +14,12 @@ module Tenantify
       end
 
       def call
-        config.strategies.map do |(name_or_class, strategy_config)|
+        strategies_config.map do |(name_or_class, strategy_config)|
           strategy_class_for(name_or_class).new(strategy_config)
         end
       end
 
     private
-
-      attr_reader :known_strategies
 
       def strategy_class_for name_or_class
         case name_or_class
@@ -30,6 +28,12 @@ module Tenantify
           else raise UnknownStrategyError.new(name_or_class.inspect)
         end
       end
+
+      def strategies_config
+        config.strategies
+      end
+
+      attr_reader :known_strategies
 
     end
   end

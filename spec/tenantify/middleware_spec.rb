@@ -7,7 +7,7 @@ RSpec.describe Tenantify::Middleware do
 
   subject { described_class.new app, config }
 
-  let(:strategies) { [] }
+  let(:strategies) { double 'strategies' }
   let(:builder)    { double 'builder', :call => strategies }
 
   before do
@@ -16,43 +16,21 @@ RSpec.describe Tenantify::Middleware do
   end
 
   describe '#call' do
-    let(:env) { double 'env' }
+    let(:env)      { double 'env' }
+    let(:response) { double 'response' }
 
-    context 'with a matching strategy' do
-      let(:response) { double 'response' }
+    it 'calls the app with the proper tenant' do
+      expect(strategies).to receive(:tenant_for).
+        with(env).and_return(:a_tenant)
 
-      let(:strategy_1) { double 'strategy_1' }
-      let(:strategy_2) { double 'strategy_2' }
-      let(:strategy_3) { double 'strategy_3' }
+      expect(app).to receive :call do |given_env|
+        expect(given_env).to eq env
+        expect(Tenantify::Tenant.current).to eq :a_tenant
 
-      let(:strategies) { [strategy_1, strategy_2, strategy_3] }
-
-      it 'returns the first matched tenant' do
-        expect(strategy_1).to receive(:tenant_for).
-          with(env).and_return(nil)
-
-        expect(strategy_2).to receive(:tenant_for).
-          with(env).and_return(:a_tenant)
-
-        expect(strategy_3).not_to receive(:tenant_for)
-
-        expect(app).to receive :call do |env|
-          expect(env).to eq env
-          expect(Tenantify::Tenant.current).to eq :a_tenant
-
-          response
-        end
-
-        expect(subject.call(env)).to eq response
+        response
       end
-    end
 
-    context 'with no matching strategy' do
-      it 'raises error' do
-        expected_error = described_class::NoMatchingStrategyError
-
-        expect { subject.call(env) }.to raise_error expected_error
-      end
+      expect(subject.call(env)).to eq response
     end
   end
 
