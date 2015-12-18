@@ -27,4 +27,9 @@ module Tenantify
     Tenant.current
   end
 
+  # Resources
+  def self.resource correspondence
+    Resource.new(correspondence)
+  end
+
 end
