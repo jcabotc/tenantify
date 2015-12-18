@@ -12,15 +12,6 @@ RSpec.describe Tenantify::Tenant do
     Thread.current[:tenant] = tenant
   end
 
-  def keep_tenant
-    original_value = current_tenant
-    yield
-  ensure
-    Thread.current[:tenant] = original_value
-  end
-
-  around { |example| keep_tenant { example.run } }
-
   describe '.using' do
     it 'changes the current tenant in the block' do
       set_tenant 'original_value'
