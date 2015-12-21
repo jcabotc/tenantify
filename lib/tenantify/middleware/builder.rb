@@ -1,10 +1,18 @@
+require 'tenantify/middleware/strategies'
+
+strategies_pattern = File.join(File.dirname(__FILE__), "strategies/*.rb")
+Dir[strategies_pattern].each { |strategy_file| require strategy_file }
+
 module Tenantify
   class Middleware
     class Builder
 
       UnknownStrategyError = Class.new(StandardError)
 
-      KNOWN_STRATEGIES = {}
+      KNOWN_STRATEGIES = {
+        :header => Strategies::Header,
+        :host   => Strategies::Host
+      }
 
       attr_reader :config
 
@@ -14,12 +22,16 @@ module Tenantify
       end
 
       def call
+        Strategies.new(strategies)
+      end
+
+    private
+
+      def strategies
         strategies_config.map do |(name_or_class, strategy_config)|
           strategy_class_for(name_or_class).new(strategy_config)
         end
       end
-
-    private
 
       def strategy_class_for name_or_class
         case name_or_class

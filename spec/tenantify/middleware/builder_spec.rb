@@ -9,6 +9,9 @@ RSpec.describe Tenantify::Middleware::Builder do
 
   subject { described_class.new config, known_strategies: known_strategies }
 
+  let(:strategies_class) { Tenantify::Middleware::Strategies }
+  let(:strategies)       { double 'strategies' }
+
   describe '#call' do
     context 'with a known strategy' do
       let(:known_strategy_class) { double 'known_strategy_class' }
@@ -22,7 +25,12 @@ RSpec.describe Tenantify::Middleware::Builder do
         expect(known_strategy_class).to receive(:new).
           with(known_config).and_return(known_strategy)
 
-        expect(subject.call).to eq [known_strategy]
+        expect(strategies_class).to receive :new do |arg|
+          expect(arg).to eq [known_strategy]
+          strategies
+        end
+
+        expect(subject.call).to eq strategies
       end
     end
 
@@ -35,7 +43,12 @@ RSpec.describe Tenantify::Middleware::Builder do
       it 'builds it properly' do
         expected_strategy = given_strategy_class.new(given_config)
 
-        expect(subject.call).to eq [expected_strategy]
+        expect(strategies_class).to receive :new do |arg|
+          expect(arg).to eq [expected_strategy]
+          strategies
+        end
+
+        expect(subject.call).to eq strategies
       end
     end
 

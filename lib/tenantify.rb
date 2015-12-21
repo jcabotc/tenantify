@@ -1,5 +1,6 @@
 require "tenantify/version"
 
+require "tenantify/middleware"
 require "tenantify/configuration"
 require "tenantify/tenant"
 
