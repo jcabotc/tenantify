@@ -9,7 +9,7 @@ module Tenantify
       @strategies = []
     end
 
-    def strategy name_or_class, strategy_config
+    def strategy name_or_class, strategy_config = {}
       strategies << [name_or_class, strategy_config]
     end
 

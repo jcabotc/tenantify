@@ -1,36 +1,35 @@
 require 'tenantify'
 
-RSpec.describe "One middleware strategy" do
+RSpec.describe "Many middleware strategies" do
 
   let(:app) { double 'app' }
+
+  let :hosts_config do
+    {:first_tenant  => ["www.host_a.com", "www.host_b.com"],
+     :second_tenant => ["www.host_c.com", "www.host_d.com"]}
+  end
 
   let :config do
     Tenantify::Configuration.new.tap do |config|
       config.strategy :header, :name => "X-Tenant"
+      config.strategy :host, hosts_config
     end
   end
 
-  let(:valid_env)   { {"X-Tenant" => "a_tenant"} }
-  let(:invalid_env) { {} }
-
+  let(:env)      { {"SERVER_NAME" => "www.host_c.com"} }
   let(:response) { double 'response' }
 
   it 'returns a matching tenant or raises_error' do
     middleware = Tenantify::Middleware.new(app, config)
 
-    # Valid env
     expect(app).to receive :call do |env|
       expect(env).to eq env
-      expect(Tenantify.current).to eq :a_tenant
+      expect(Tenantify.current).to eq :second_tenant
 
       response
     end
 
-    expect(middleware.call(valid_env)).to eq response
-
-    # Invalid env
-    no_match_error = Tenantify::Middleware::Strategies::NotMatchingStrategyError
-    expect {middleware.call(invalid_env)}.to raise_error no_match_error
+    expect(middleware.call(env)).to eq response
   end
 
 end
