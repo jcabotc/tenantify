@@ -6,20 +6,20 @@ module Tenantify
   module Tenant
 
     def self.using tenant
-      original_value = Thread.current[:tenant]
+      original_tenant = Thread.current.thread_variable_get(:tenant)
 
-      Thread.current[:tenant] = tenant
+      Thread.current.thread_variable_set(:tenant, tenant)
       yield
     ensure
-      Thread.current[:tenant] = original_value
+      Thread.current.thread_variable_set(:tenant, original_tenant)
     end
 
     def self.use! tenant
-      Thread.current[:tenant] = tenant
+      Thread.current.thread_variable_set(:tenant, tenant)
     end
 
     def self.current
-      Thread.current[:tenant]
+      Thread.current.thread_variable_get(:tenant)
     end
 
   end

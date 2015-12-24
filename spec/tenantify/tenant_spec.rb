@@ -5,11 +5,11 @@ RSpec.describe Tenantify::Tenant do
   subject { Tenantify::Tenant }
 
   def current_tenant
-    Thread.current[:tenant]
+    Thread.current.thread_variable_get(:tenant)
   end
 
   def set_tenant tenant
-    Thread.current[:tenant] = tenant
+    Thread.current.thread_variable_set(:tenant, tenant)
   end
 
   describe '.using' do
