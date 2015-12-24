@@ -13,8 +13,9 @@ module Tenantify
 
       # Known strategies. They can be specified with a symbol.
       KNOWN_STRATEGIES = {
-        :header => Strategies::Header,
-        :host   => Strategies::Host
+        :header  => Strategies::Header,
+        :host    => Strategies::Host,
+        :default => Strategies::Default
       }
 
       # @return [Tenantify::Configuration] given configuration.

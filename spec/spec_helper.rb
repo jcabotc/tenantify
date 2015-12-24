@@ -1,4 +1,5 @@
 require 'pry'
+require 'tenantify/tenant'
 
 RSpec.configure do |config|
 

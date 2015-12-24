@@ -19,7 +19,7 @@ RSpec.describe "Many middleware strategies" do
   let(:env)      { {"SERVER_NAME" => "www.host_c.com"} }
   let(:response) { double 'response' }
 
-  it 'returns a matching tenant or raises_error' do
+  it 'returns a matching tenant' do
     middleware = Tenantify::Middleware.new(app, config)
 
     expect(app).to receive :call do |env|

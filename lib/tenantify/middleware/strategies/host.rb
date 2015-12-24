@@ -4,7 +4,7 @@ module Tenantify
       # Strategy to get the tenant from the request host.
       # It expect the tenant name from configuration.
       #
-      # @example Using Header strategy:
+      # @example Using Host strategy:
       #   config = {
       #     :tenant_1 => ["www.domain_a.com", "www.domain_b.com"],
       #     :tenant_2 => ["www.domain_c.com"]
@@ -17,10 +17,10 @@ module Tenantify
       #   not_matching_env = {"SERVER_NAME" => "www.another_domain.com"}
       #   strategy.tenant_for(not_matching_env) # => nil
       class Host
-        # Constructor.
+        # Constructor. It receives a hash with tenants as keys and arrays of
+        # hosts as values.
         #
-        # @param [Hash] the strategy configuration.
-        # @option :name the name of the header.
+        # @param [{Symbol => <String>}] the strategy configuration.
         def initialize config
           @config = config
         end
