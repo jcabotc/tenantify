@@ -5,27 +5,40 @@ Dir[strategies_pattern].each { |strategy_file| require strategy_file }
 
 module Tenantify
   class Middleware
+    # This class builds all the strategies and injects them into a
+    # Strategies object.
     class Builder
-
+      # Invalid strategy specification
       UnknownStrategyError = Class.new(StandardError)
 
+      # Known strategies. They can be specified with a symbol.
       KNOWN_STRATEGIES = {
         :header => Strategies::Header,
         :host   => Strategies::Host
       }
 
+      # @return [Tenantify::Configuration] given configuration.
       attr_reader :config
 
+      # Constructor.
+      #
+      # @param [Tenantify::Configuration] the tenantify configuration.
+      # @param [Hash] a correspondence between strategy names and classes.
       def initialize config, known_strategies: KNOWN_STRATEGIES
         @config           = config
         @known_strategies = known_strategies
       end
 
+      # Builds the Strategies object.
+      #
+      # @return [Strategies] the strategies object.
       def call
         Strategies.new(strategies)
       end
 
     private
+
+      attr_reader :known_strategies
 
       def strategies
         strategies_config.map do |(name_or_class, strategy_config)|
@@ -44,9 +57,6 @@ module Tenantify
       def strategies_config
         config.strategies
       end
-
-      attr_reader :known_strategies
-
     end
   end
 end
