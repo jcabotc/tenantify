@@ -1,4 +1,8 @@
 module Tenantify
+  # Responsible for managing the current tenant. All useful methods {#using},
+  # {#use!}, and {#current} have aliases at {Tenantify} module.
+  #
+  # == Threading Notes
   module Tenant
 
     def self.using tenant

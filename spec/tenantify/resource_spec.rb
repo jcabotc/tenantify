@@ -14,16 +14,9 @@ RSpec.describe Tenantify::Resource do
 
   subject { described_class.new correspondence }
 
-  def with tenant
-    Thread.current[:tenant] = tenant
-    yield
-  ensure
-    Thread.current[:tenant] = nil
-  end
-
   describe '#current' do
     it 'returns the current resource' do
-      with tenant_2 do
+      Tenantify::Tenant.using tenant_2 do
         expect(subject.current).to eq resource_2
       end
     end
@@ -39,6 +32,7 @@ RSpec.describe Tenantify::Resource do
     let :expected_collection do
       [ [tenant_1, resource_1], [tenant_2, resource_2] ]
     end
+
     it 'is a collection of resources' do
       expect(subject.to_a).to eq expected_collection
     end

@@ -5,10 +5,10 @@ RSpec.configure do |config|
   # Restore the original tenant after each test
   config.around :each do |example|
     begin
-      original_value = Thread.current[:tenant]
+      original_value = Tenantify::Tenant.current
       example.run
     ensure
-      Thread.current[:tenant] = original_value
+      Tenantify::Tenant.use! original_value
     end
   end
 
