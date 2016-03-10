@@ -21,7 +21,7 @@ RSpec.describe "One middleware strategy" do
     # Valid env
     expect(app).to receive :call do |env|
       expect(env).to eq env
-      expect(Tenantify.current).to eq :a_tenant
+      expect(Tenantify.current).to eq 'a_tenant'
 
       response
     end
