@@ -30,10 +30,9 @@ module Tenantify
         # @param [rack_environment] the rack environment.
         # @return [Symbol, nil] the found tenant of nil.
         def tenant_for env
-          host   = env["SERVER_NAME"]
-          tenant = correspondence[host]
+          host = env["SERVER_NAME"]
 
-          tenant.to_sym if tenant
+          correspondence[host]
         end
 
       private

@@ -34,7 +34,7 @@ module Tenantify
         attr_reader :config
 
         def tenant
-          @tenant ||= config.fetch(:tenant) { raise_error }.to_sym
+          @tenant ||= config.fetch(:tenant) { raise_error }
         end
 
         def raise_error

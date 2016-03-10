@@ -11,7 +11,7 @@ RSpec.describe Tenantify::Middleware::Strategies::Header do
       let(:env) { {'X-Tenant' => 'the_tenant'} }
 
       it 'returns the header content' do
-        expect(subject.tenant_for(env)).to eq :the_tenant
+        expect(subject.tenant_for(env)).to eq 'the_tenant'
       end
     end
 

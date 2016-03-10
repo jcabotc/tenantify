@@ -16,7 +16,7 @@ RSpec.describe Tenantify::Middleware::Strategies::Host do
       let(:env) { {"SERVER_NAME" => 'www.host_c.com'} }
 
       it 'chooses the proper tenant' do
-        expect(subject.tenant_for(env)).to eq :tenant_2
+        expect(subject.tenant_for(env)).to eq 'tenant_2'
       end
     end
 
