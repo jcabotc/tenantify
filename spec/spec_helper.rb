@@ -1,15 +1,17 @@
-require 'pry'
+$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 require 'tenantify/tenant'
+
+require 'pry'
 
 RSpec.configure do |config|
 
   # Restore the original tenant after each test
   config.around :each do |example|
     begin
-      original_value = Tenantify::Tenant.current
+      original_value = Tenantify.current
       example.run
     ensure
-      Tenantify::Tenant.use! original_value
+      Tenantify.use! original_value
     end
   end
 
