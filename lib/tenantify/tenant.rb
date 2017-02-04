@@ -1,4 +1,5 @@
 module Tenantify
+
   # Responsible for managing the current tenant. All useful methods {#using},
   # {#use!}, and {#current} have aliases at {Tenantify} module.
   #
@@ -7,14 +8,15 @@ module Tenantify
   # tenant. This means that when a new thread is spawned, the tenant has to
   # be set manually.
   module Tenant
+
     # Runs the given block for a tenant.
     #
-    # @param [Symbol] the tenant to run the code for.
+    # @param [String] the tenant to run the code for.
     # @yield the code to run.
     # @return the returning value of the block.
     #
     # @example Getting data from a storage of a particular tenant:
-    #   data = Tenant.using :the_tenant do
+    #   data = Tenant.using "the_tenant" do
     #     Storage.current.get_data
     #   end
     def self.using tenant
@@ -28,17 +30,18 @@ module Tenantify
 
     # Sets the given tenant from now on.
     #
-    # @param [Symbol] the tenant to set.
-    # @return [Symbol] the set tenant.
+    # @param [String] the tenant to set.
+    # @return [String] the set tenant.
     def self.use! tenant
       Thread.current.thread_variable_set(:tenant, tenant)
     end
 
     # Returns the current tenant.
     #
-    # @return [Symbol] the current tenant.
+    # @return [String] the current tenant.
     def self.current
       Thread.current.thread_variable_get(:tenant)
     end
+
   end
 end

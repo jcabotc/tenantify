@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Tenantify::VERSION
   spec.authors       = ["Jaime Cabot Campins"]
   spec.email         = ["jcabot@gmail.com"]
-  spec.summary       = %q{It provides support for managing tenants on Rack applications}
+  spec.summary       = %q{Multitenancy management for Ruby applications}
   spec.homepage      = ""
   spec.license       = "MIT"
 
