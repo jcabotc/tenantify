@@ -1,24 +1,9 @@
 require "tenantify/version"
 
-require "tenantify/configuration"
 require "tenantify/tenant"
 require "tenantify/resource"
 
 module Tenantify
-  # Tenantify configuration
-  #
-  # @return [Configuration] the current configuration
-  def self.configuration
-    @configuration ||= Configuration.new
-  end
-
-  # A helper to configure Tenantify
-  #
-  # @yield [configuration] Configures tenantify
-  def self.configure
-    yield configuration
-  end
-
   # An alias to {Tenant::using}
   #
   # @example Run some code on a particular tenant
